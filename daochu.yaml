@@ -1,0 +1,7 @@
+has_visible: true
+classes:
+  board:
+    - left_top
+    - right_top
+    - right_bottom
+    - left_bottom

@@ -1,0 +1,19 @@
+path: ./datasets
+train: images/train
+val: images/val
+
+kpt_shape: [4, 3] # number of keypoints关键点, number of dims维度 (2 for x,y or 3 for x,y,visible可见性)
+
+# flip_idx: [] 水平翻转索引
+
+# classes类别
+nc: 1
+names:
+  0: board # 组号 类别名
+
+kpt_name:
+  0:
+    - left_top
+    - right_top
+    - right_bottom
+    - left_bottom

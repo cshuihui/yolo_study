@@ -1,0 +1,15 @@
+type: yolo11_pose
+name: best
+provider: Ultralytics
+display_name: bsst
+model_path: G:\bucket\best.onnx
+conf_threshold: 0.25
+iou_threshold: 0.45
+kpt_threshold: 0.10
+has_visible: True
+classes:
+  board:
+    - left_top
+    - right_top
+    - right_bottom
+    - left_bottom
