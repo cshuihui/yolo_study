@@ -1,0 +1,12 @@
+path: ./resources/ui_detection
+train: images/train
+val: images/val
+
+nc: 6
+names:
+  - board
+  - color_blocks
+  - brush_button
+  - bucket_button
+  - confirm_button
+  - back_button

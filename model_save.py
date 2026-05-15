@@ -1,5 +1,5 @@
 from ultralytics import YOLO
 
-model = YOLO('best.pt')
+model = YOLO('best_d.pt')
 
 model.export(format='onnx')

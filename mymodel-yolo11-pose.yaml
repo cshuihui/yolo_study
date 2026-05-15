@@ -1,4 +1,4 @@
-path: ./datasets
+path: ./resources
 train: images/train
 val: images/val
 
@@ -12,7 +12,6 @@ names:
   0: board # 组号 类别名
 
 kpt_name:
-  0:
     - left_top
     - right_top
     - right_bottom
