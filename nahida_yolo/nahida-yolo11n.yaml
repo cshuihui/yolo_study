@@ -1,0 +1,7 @@
+path: D:/py_product/yolo_study/nahida_yolo/anime_datasets
+train: images/train
+val: images/val
+
+nc: 1
+names: 
+  0: nahida
