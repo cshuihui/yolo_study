@@ -117,7 +117,8 @@ def main():
         batch=BATCH_SIZE,                # Batch Size
         imgsz=640,                       # 输入分辨率（标准 640x640）
         save=True,                       # 保存训练权重文件
-        save_period=10,                  # 每 10 轮保存一次周期性 checkpoint
+        save_period=-1,                  # 关闭周期性 checkpoint
+        cache=False,                     # 关闭训练图片缓存
 
         # ── 优化器与学习率 ──
         optimizer="AdamW",               # 选用 AdamW（小数据集/同人插画迁移收敛极稳）
