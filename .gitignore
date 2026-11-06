@@ -6,3 +6,6 @@ nahida_yolo/runs/
 nahida_yolo/anime_datasets/
 nahida_yolo/labels/
 nahida_yolo/need_train_image/
+resources/
+runs/
+ultralytics-main/
