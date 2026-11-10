@@ -1,4 +1,4 @@
-path: D:/py_product/yolo_study/nahida_yolo/anime_datasets
+path: ./anime_datasets
 train: images/train
 val: images/val
 
