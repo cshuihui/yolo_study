@@ -18,12 +18,14 @@ ROOT_DIR = Path(__file__).resolve().parent
 # =========================================================================
 # 核心全局配置
 # =========================================================================
-BASE_TASK_PREFIX = "nahida_yolo11n"            # 任务名前缀
+MODEL_ORIGINAL_VERSION = "yolo8n"                     # 模型系列标识，用于任务命名；实际模型结构由基础权重决定
+MODEL_BASE_VERSION = "anime-yolo8n.pt"                         # 基础权重文件，相对于本脚本目录
+BASE_TASK_PREFIX = f"nahida_{MODEL_ORIGINAL_VERSION}"            # 任务名前缀
 AUTO_DETECT_VERSION = True                     # 是否开启自动递增版本号与自动寻优权重（True: 推荐全自动; False: 手动）
 
 # 仅在 AUTO_DETECT_VERSION = False 时生效的手动配置：
-MANUAL_TASK_NAME = "nahida_yolo11n_v1"
-MANUAL_PRETRAINED_WEIGHT = "runs/nahida_yolo11n_v1/weights/best.pt"
+MANUAL_TASK_NAME = f"nahida_{MODEL_ORIGINAL_VERSION}_v1"
+MANUAL_PRETRAINED_WEIGHT = f"runs/{MANUAL_TASK_NAME}/weights/best.pt"
 
 EPOCHS = 40                                     # 训练轮次（针对新增难负样本微调 20~25 轮即可）
 BATCH_SIZE = 24                                 # 批次大小（RTX 4060 推荐 16）
@@ -174,10 +176,10 @@ def temporary_small_samples(dataset_root: Path):
 def get_task_and_weight(runs_dir: Path, base_name: str):
     """
     自动扫描 runs 目录：
-    1. 寻找 nahida_yolo11n 以及 nahida_yolo11n_v<N> 的文件夹；
-    2. 找到当前最高版本号 N，自动将新任务名设为 nahida_yolo11n_v<N+1>；
+    1. 按 base_name 查找对应系列的历史任务目录及 _v<N> 版本；
+    2. 找到当前最高版本号 N，自动将新任务名设为 base_name_v<N+1>；
     3. 自动将最新版本下的 weights/best.pt 作为基础预训练权重；
-    4. 若尚无历史版本，则从 v1 开始并加载官方骨干 yolo11n.pt。
+    4. 无历史权重可用时，加载 MODEL_BASE_VERSION 指定的基础权重。
     """
     if not runs_dir.exists():
         runs_dir.mkdir(parents=True, exist_ok=True)
@@ -194,9 +196,9 @@ def get_task_and_weight(runs_dir: Path, base_name: str):
                 versions.append((int(m.group(1)), p))
 
     if not versions:
-        # 无历史记录，从 v1 官方预训练骨干开始
+        # 无历史记录，从 v1 和全局配置的基础权重开始
         task_name = f"{base_name}_v1"
-        weight_path = ROOT_DIR / "yolo11n.pt"
+        weight_path = ROOT_DIR / MODEL_BASE_VERSION
         print(f"[自动管理] 未检测到历史版本，自动初始化任务: {task_name}")
         print(f"[自动管理] 基础预训练权重: {weight_path}")
         return task_name, weight_path
@@ -219,7 +221,7 @@ def get_task_and_weight(runs_dir: Path, base_name: str):
             print(f"[提示] 最新目录 {latest_dir.name} 未找到 best.pt，已回退至: {fallback_weight}")
             weight_path = fallback_weight
         else:
-            weight_path = ROOT_DIR / "yolo11n.pt"
+            weight_path = ROOT_DIR / MODEL_BASE_VERSION
     else:
         weight_path = best_weight
 
@@ -235,7 +237,7 @@ def select_task_and_weight(runs_dir: Path):
         return get_task_and_weight(runs_dir, BASE_TASK_PREFIX)
     model_weight = ROOT_DIR / MANUAL_PRETRAINED_WEIGHT
     if not model_weight.exists():
-        model_weight = ROOT_DIR / "yolo11n.pt"
+        model_weight = ROOT_DIR / MODEL_BASE_VERSION
     return MANUAL_TASK_NAME, model_weight
 
 
